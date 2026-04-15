@@ -1,11 +1,15 @@
-================================================================================
+
          PAGE REPLACEMENT ALGORITHM SIMULATOR - HOW TO USE
-================================================================================
+
 
 [Step 1] Open Terminal
+
          ↓
+         
 [Step 2] Type: streamlit run app.py
+
          ↓
+         
 [Step 3] Press Enter
          ↓
 [Step 4] Wait for "Local URL: http://localhost:8501"
