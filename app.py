@@ -406,7 +406,7 @@ if generate:
             else:
                 status_text.success(f"✅ Step {step + 1}: Page {pages[step]} was a HIT!")
 
-            time.sleep(animation_speed*0.01)
+            time.sleep(animation_speed*0.5)
 
         status_text.info("Animation Complete!")
 
