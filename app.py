@@ -564,58 +564,6 @@ if generate:
     st.dataframe(styled_df, use_container_width=True, hide_index=True)
 
     st.caption("🟢 Green = Best Performance | 🔴 Red = Worst Performance")
-    # Algorithm Insights
-    st.markdown("---")
-    st.subheader(" Algorithm Insights")
-
-    if algorithm == "Optimal":
-        st.info("""
-        1.  ** Optimal Algorithm** replaces the page that won't be used for the longest time in the future. 
-        2.  Gives minimum possible page faults (benchmark)
-        3.  Not practical in real systems (requires future knowledge)
-        4.  Used as theoretical reference for comparison
-        """)
-    elif algorithm == "LRU":
-        st.info("""
-        1.  ** LRU (Least Recently Used)** replaces the page that hasn't been used for the longest time.
-        2.  Good performance in most real-world scenarios
-        3.  Uses temporal locality principle
-        4.  Requires hardware support or expensive software implementation
-        """)
-    elif algorithm == "Second Chance ":
-        st.info("""
-        1.  ** Second Chance Algorithm** combines FIFO with a reference bit system.
-        2.  Efficient implementation using circular queue
-        3.  Approximates LRU with lower overhead
-        4.  Prevents thrashing of frequently used pages
-        5.  Uses reference bits to give pages a 'second chance'
-        6.  Maintains a clock hand pointer for circular traversal
-        """)
-    elif algorithm == "LFU":
-        st.info("""
-        1.  ** LFU (Least Frequently Used)** replaces the page with the lowest access frequency.
-        2.  Good for workloads with stable access patterns
-        3.  Keeps frequently accessed pages in memory
-        4.  Suffers from "frequency pollution" (old pages with high counts)
-        5.  New pages are vulnerable to immediate replacement
-        6.  Requires maintaining frequency counters for each page
-        """)
-    elif algorithm == "MFU":
-        st.info("""
-        1.  ** MFU (Most Frequently Used)** replaces the page with the highest access frequency.
-        2.  Based on theory that heavily used pages will soon not be needed
-        3.  Counter-intuitive and rarely optimal in practice
-        4.  Often performs poorly compared to other algorithms
-        5.  Useful for comparison and understanding frequency-based approaches
-        6.  Sometimes effective for specific workload patterns
-        """)
-    else:
-        st.info("""
-        1. ** FIFO (First In First Out)** replaces the oldest loaded page first.
-        2.  Simple to implement
-        3.  May suffer from Belady's Anomaly (more frames can cause more faults)
-        4.  Doesn't consider page usage frequency
-        """)
 
 # Footer
 st.markdown("---")
