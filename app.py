@@ -464,7 +464,7 @@ if generate:
         df.style.set_properties(**{'text-align': 'center'}).set_table_styles([
             {'selector': 'th', 'props': [('text-align', 'center')]}
         ]),
-        use_container_width=True,
+        width='stretch',
         hide_index=True
     )
 
@@ -561,7 +561,7 @@ if generate:
 
 
     styled_df = comp_df.style.apply(highlight_best_worst)
-    st.dataframe(styled_df, use_container_width=True, hide_index=True)
+    st.dataframe(styled_df, width='stretch', hide_index=True)
 
     st.caption("🟢 Green = Best Performance | 🔴 Red = Worst Performance")
 
