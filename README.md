@@ -9,7 +9,7 @@
        
 [Step 3] Press Enter
 
-[Step 4] Wait for "Local URL: http://localhost:8501"
+[Step 4] Wait for Local URL
 
 [Step 5] Click the link OR copy to browser
 
