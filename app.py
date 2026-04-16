@@ -118,102 +118,76 @@ def second_chance(pages, frames):
 
 
 def lfu(pages, frames):
-    """Least Frequently Used Algorithm"""
     memory = []
     page_faults = 0
     memory_states = []
     decisions = []
-    frequency = {}  # Track frequency of each page in memory
-    arrival_order = {}  # Track arrival order for tie-breaking
 
-    for i, page in enumerate(pages):
-        fault = False
+    global_freq = {}  # persistent frequency
+
+    for page in pages:
+        # update global frequency ALWAYS
+        global_freq[page] = global_freq.get(page, 0) + 1
 
         if page in memory:
-            # Page hit - increment frequency
-            frequency[page] += 1
             fault = False
         else:
-            # Page fault
-            if len(memory) < frames:
-                # Memory not full
-                memory.append(page)
-                frequency[page] = 1
-                arrival_order[page] = i
-            else:
-                # Find page with minimum frequency (use arrival order for ties)
-                min_freq = min(frequency[p] for p in memory)
-                candidates = [p for p in memory if frequency[p] == min_freq]
-                # Tie-break by earliest arrival (FIFO among same frequency)
-                lfu_page = min(candidates, key=lambda p: arrival_order[p])
-
-                # Remove LFU page
-                idx = memory.index(lfu_page)
-                del frequency[lfu_page]
-                del arrival_order[lfu_page]
-
-                # Add new page
-                memory[idx] = page
-                frequency[page] = 1
-                arrival_order[page] = i
-
-            page_faults += 1
             fault = True
+            page_faults += 1
+
+            if len(memory) < frames:
+                memory.append(page)
+            else:
+                # choose least frequently used globally
+                min_freq = min(global_freq[p] for p in memory)
+                candidates = [p for p in memory if global_freq[p] == min_freq]
+
+                # optional tie-break: just pick first
+                victim = candidates[0]
+
+                idx = memory.index(victim)
+                memory[idx] = page
 
         memory_states.append(memory.copy())
         decisions.append("✔️" if fault else "➖")
 
     return page_faults, memory_states, decisions
-
 
 def mfu(pages, frames):
-    """Most Frequently Used Algorithm"""
     memory = []
     page_faults = 0
     memory_states = []
     decisions = []
-    frequency = {}  # Track frequency of each page in memory
-    arrival_order = {}  # Track arrival order for tie-breaking
 
-    for i, page in enumerate(pages):
-        fault = False
+    global_freq = {}  # persistent frequency
+
+    for page in pages:
+        # update global frequency safely
+        global_freq[page] = global_freq.get(page, 0) + 1
 
         if page in memory:
-            # Page hit - increment frequency
-            frequency[page] += 1
             fault = False
         else:
-            # Page fault
-            if len(memory) < frames:
-                # Memory not full
-                memory.append(page)
-                frequency[page] = 1
-                arrival_order[page] = i
-            else:
-                # Find page with maximum frequency (use arrival order for ties)
-                max_freq = max(frequency[p] for p in memory)
-                candidates = [p for p in memory if frequency[p] == max_freq]
-                # Tie-break by earliest arrival (FIFO among same frequency)
-                mfu_page = min(candidates, key=lambda p: arrival_order[p])
-
-                # Remove MFU page
-                idx = memory.index(mfu_page)
-                del frequency[mfu_page]
-                del arrival_order[mfu_page]
-
-                # Add new page
-                memory[idx] = page
-                frequency[page] = 1
-                arrival_order[page] = i
-
-            page_faults += 1
             fault = True
+            page_faults += 1
+
+            if len(memory) < frames:
+                memory.append(page)
+            else:
+                # choose MOST frequently used globally
+                max_freq = max(global_freq[p] for p in memory)
+                candidates = [p for p in memory if global_freq[p] == max_freq]
+
+                # simple tie-break (first one)
+                victim = candidates[0]
+
+                idx = memory.index(victim)
+                memory[idx] = page
 
         memory_states.append(memory.copy())
         decisions.append("✔️" if fault else "➖")
 
     return page_faults, memory_states, decisions
-
 
 def create_animation_frame(pages, memory_states, decisions, current_step, frames, algorithm):
     """Create a single frame of the animation"""
